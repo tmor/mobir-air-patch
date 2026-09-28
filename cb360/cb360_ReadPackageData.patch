@@ -1,0 +1,30 @@
+# MobIR 1.4.96: use mPackageHumanBody when mPackageLow is null (MobIR Air CB360)
+# Apply to apktool output: patch -p1 -d <apktool_out_dir> < this_file
+--- a/smali_classes2/com/guide/mcu/McuGuideInterface.smali
++++ b/smali_classes2/com/guide/mcu/McuGuideInterface.smali
+@@ -7411,6 +7411,25 @@
+     .line 3273
+     new-array p1, p3, [B
+ 
++    # CB360 patch: MobIR Air (CB360 SN) only builds mPackageHumanBody; redirect other ranges to it
++    iget-object v0, p0, Lcom/guide/mcu/McuGuideInterface;->mPackageLow:[B
++
++    if-nez v0, :cb360_patch_skip
++
++    iget-object v0, p0, Lcom/guide/mcu/McuGuideInterface;->mPackageHumanBody:[B
++
++    if-eqz v0, :cb360_patch_skip
++
++    const-string v0, "mcu_guidecore"
++
++    const-string v1, "CB360 patch: mPackageLow null, use mPackageHumanBody"
++
++    invoke-static {v0, v1}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
++
++    sget-object p4, Lcom/guide/ita/io/EnumITARange;->ITA_HUMAN_BODY:Lcom/guide/ita/io/EnumITARange;
++
++    :cb360_patch_skip
++
+     .line 3274
+     sget-object p5, Lcom/guide/ita/io/EnumITARange;->ITA_HUMAN_BODY:Lcom/guide/ita/io/EnumITARange;
+ 

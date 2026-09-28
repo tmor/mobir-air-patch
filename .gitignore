@@ -1,0 +1,10 @@
+# APKs and archives (never commit app binaries)
+*.apk
+*.xapk
+*.apks
+*.zip
+*.idsig
+
+# downloaded tools and work dirs
+tools/
+work/
